@@ -1,0 +1,21 @@
+# Core dependencies
+cobra>=0.26.0
+pandas>=1.5.0
+numpy>=1.23.0
+openpyxl>=3.0.10
+
+# Visualization
+matplotlib>=3.6.0
+seaborn>=0.12.0
+
+# Jupyter
+jupyter>=1.0.0
+jupyterlab>=3.5.0
+ipython>=8.0.0
+
+# Optional: for advanced analysis
+scipy>=1.9.0
+networkx>=2.8.0
+
+# For data handling
+xlrd>=2.0.1
