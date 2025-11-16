@@ -1,0 +1,157 @@
+================================================================================
+STEP 1: LOAD HUMAN-GEM MODEL
+================================================================================
+
+✓ Model loaded: HumanGEM
+  Reactions: 12,971
+  Metabolites: 8,455
+  Genes: 2,887
+
+================================================================================
+STEP 2: EXTRACT BUTYRATE REACTIONS (KEYWORD SEARCH)
+================================================================================
+
+✓ Found 60 butyrate reactions
+  Excluded 23 false positives
+
+=== BREAKDOWN BY PATHWAY PHASE ===
+  TRASPORTO:        9 reactions
+  ATTIVAZIONE:      5 reactions
+  β-OSSIDAZIONE:   55 reactions
+
+================================================================================
+STEP 3: ADD OXPHOS & EXCHANGE REACTIONS
+================================================================================
+
+  Added 3 OXPHOS reactions
+  Added 5 key exchange reactions:
+    + MAR09086        | Exchange of acetate
+    + MAR09808        | Exchange of propanoate
+    + MAR09048        | Exchange of O2
+    + MAR09058        | Exchange of CO2
+    + MAR09047        | Exchange of H2O
+    + MAR09931        | Biomass maintenance reaction without replication precursors (BIOMASS/ATPM)
+    + MAR09932        | Biomass maintenance reaction without replication, transcription, and translation precursors (BIOMASS/ATPM)
+    + MAR04413        | Generic Human Biomass Reaction (BIOMASS/ATPM)
+
+✓ TOTAL CORE REACTIONS: 71
+
+================================================================================
+STEP 4: VERIFY PATHWAY COMPLETENESS
+================================================================================
+
+=== COMPARTMENTS DISTRIBUTION ===
+  [c] Cytosol                  :  176 metabolites involved
+  [e] Extracellular            :   51 metabolites involved
+  [x] Peroxisome               :   36 metabolites involved
+  [m] Mitochondria             :   28 metabolites involved
+  [r] Endoplasmic reticulum    :    4 metabolites involved
+  [n] Nucleus                  :    4 metabolites involved
+
+=== PATHWAY PHASES VERIFICATION ===
+  ✓ TRASPORTO (lumen→cytosol)
+  ✓ ATTIVAZIONE (BUT→Butirril-CoA)
+  ✓ β-OSSIDAZIONE (4 steps)
+  ✓ OXPHOS (ATP production)
+
+================================================================================
+STEP 5: EXTRACT ENSG IDs FROM BUTYRATE REACTIONS
+================================================================================
+
+✓ Extracted 38 unique ENSG IDs from butyrate reactions
+
+Sample ENSG IDs (first 10):
+   1. ENSG00000005469  →  1 reactions
+   2. ENSG00000060971  →  4 reactions
+   3. ENSG00000084754  →  1 reactions
+   4. ENSG00000099998  →  2 reactions
+   5. ENSG00000100024  →  1 reactions
+   6. ENSG00000100031  →  2 reactions
+   7. ENSG00000100121  →  2 reactions
+   8. ENSG00000110090  →  1 reactions
+   9. ENSG00000113790  →  3 reactions
+  10. ENSG00000115425  →  1 reactions
+
+================================================================================
+STEP 6: CREATE BIOMART INPUT FILE
+================================================================================
+
+✓ BioMart input file created: data/HumanGEM_butyrate_genes_for_BioMart.xlsx
+  Total genes: 38
+
+=== PREVIEW (first 10 rows) ===
+        ENSG_ID     Gene_Symbol  Reaction_Count                              Reactions                 Notes
+ENSG00000005469 ENSG00000005469               1                               MAR04678 Butyrate pathway gene
+ENSG00000060971 ENSG00000060971               4 MAR03101, MAR06280, MAR06284, MAR06285 Butyrate pathway gene
+ENSG00000084754 ENSG00000084754               1                               MAR03160 Butyrate pathway gene
+ENSG00000099998 ENSG00000099998               2                     MAR04796, MAR08548 Butyrate pathway gene
+ENSG00000100024 ENSG00000100024               1                               MAR04819 Butyrate pathway gene
+ENSG00000100031 ENSG00000100031               2                     MAR04796, MAR08548 Butyrate pathway gene
+ENSG00000100121 ENSG00000100121               2                     MAR04796, MAR08548 Butyrate pathway gene
+ENSG00000110090 ENSG00000110090               1                               MAR05456 Butyrate pathway gene
+ENSG00000113790 ENSG00000113790               3           MAR06280, MAR06284, MAR06285 Butyrate pathway gene
+ENSG00000115425 ENSG00000115425               1                               MAR02155 Butyrate pathway gene
+
+================================================================================
+STEP 7: SUMMARY STATISTICS FOR DANIELA
+================================================================================
+
+=== PROJECT SUMMARY ===
+Human-GEM Total Reactions: 12,971
+Human-GEM Total Genes: 2,887
+Butyrate Reactions Found: 60
+    - Transport: 9
+    - Activation: 5
+    - β-Oxidation: 55
+OXPHOS Reactions Added: 3
+Exchange Reactions Added: 5
+Total Core Reactions: 71
+ENSG Genes Extracted: 38
+Compartments Involved: 6
+
+✓ Detailed reactions exported: data/butyrate_reactions_detailed.xlsx
+
+================================================================================
+STEP 8: KEY FINDINGS & NEXT STEPS
+================================================================================
+
+✅ COMPLETATO WORKFLOW REAZIONI→GENI (corretto):
+
+1. ESTRAZIONI REAZIONI:
+   - 60 reazioni butirrato trovate con keyword search
+   - 9 trasporto, 5 attivazione, 55 β-ossidazione
+   - 3 reazioni OXPHOS aggiunte
+   - 5 exchange reactions chiave aggiunte
+
+2. VERIFICA PATHWAY:
+   ✓ 4 fasi presenti (trasporto, attivazione, β-ox, OXPHOS)
+   ✓ Compartimenti rilevati: [c], [e], [m], [n], [r], [x]
+
+3. GENE EXTRACTION:
+   - 38 ENSG IDs estratti DALLE REAZIONI (non da lista manuale!)
+   - File per BioMart: data/HumanGEM_butyrate_genes_for_BioMart.xlsx
+
+4. PROSSIMI STEP:
+   a) Usare BioMart per mappare ENSG umani → ENSCAFG canini
+   b) Sostituire GPR con ENSCAFG (usando script caninize_gpr.py)
+   c) Applicare bounds dettagliati (FBA_bounds_colonocita_cane_pilota.xlsx)
+   d) Eseguire 7 test funzionali (workflow Daniela)
+
+FILES GENERATI:
+- data/HumanGEM_butyrate_genes_for_BioMart.xlsx
+- data/butyrate_reactions_detailed.xlsx
+
+NOTA IMPORTANTE:
+- Exchange reactions identificate con IDs corretti Human-GEM:
+  * Butirrato: MAR09809
+  * Acetato: MAR09086
+  * Propionato: MAR09808
+  * O2/CO2/H2O: MAR09048/MAR09058/MAR09047
+  * Biomass (ATPM): MAR09931
+
+- Gli IDs nel file bounds precedente (EX_but_lum, etc.) NON esistono
+  in Human-GEM → vanno sostituiti con quelli corretti
+
+================================================================================
+✓ SCRIPT COMPLETED
+================================================================================
