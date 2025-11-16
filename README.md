@@ -34,7 +34,7 @@ Colonocytes (colonic epithelial cells) derive ~70% of their energy from **butyra
 ### Workflow: Human-GEM → Canine-GEM
 
 **1. Model source**: Human-GEM (Recon3D)
-   - 13,400 reactions, 4,100 genes
+   - 12,971 reactions, 2,887 genes (SBML version loaded)
    - Fully annotated with KEGG, MetaCyc, BiGG IDs
    - SBML format, COBRApy compatible
 
@@ -59,12 +59,22 @@ canine-colon-gem/
 ├── requirements.txt                   # Python dependencies
 ├── .gitignore                        # Git ignore patterns
 ├── notebooks/
-│   └── 01_caninization_workflow.ipynb  # Main analysis notebook
+│   └── 01_caninization_workflow.ipynb  # Main analysis notebook (da aggiornare)
 ├── data/
-│   ├── 01_physiological_bounds.xlsx   # Canine SCFA uptake rates, O₂ bounds
-│   ├── 02_human_dog_orthologs.xlsx    # Human→Dog gene mappings (Ensembl)
-│   └── 03_kinetic_parameters.xlsx     # Km/Vmax ranges for core reactions
-├── docs/                              # Original project documentation
+│   ├── 01_physiological_bounds.xlsx   # Canine SCFA uptake rates, O₂ bounds (9 righe)
+│   ├── 02_human_dog_orthologs.xlsx    # Human→Dog gene mappings (14 geni core)
+│   ├── 03_kinetic_parameters.xlsx     # Km/Vmax ranges for core reactions (5 lumped)
+│   └── daniela_detailed/              # ⭐ File dettagliati da Daniela (16/11/2025)
+│       ├── FBA_bounds_colonocita_cane_pilota.xlsx  # 19 bounds (+ pathway specifiche)
+│       └── Cinetiche_Butirrato.xlsx                # 9 reazioni MM (step-by-step β-ox)
+├── docs/
+│   ├── daniela_workflows/             # ⭐ Workflow documentation da Daniela
+│   │   ├── README.md                  # Tutorial completo + confronto approcci
+│   │   ├── flusso codici cobra.docx   # Script Python caninize_gpr.py
+│   │   ├── Flusso operativo per ortologhi canini mod.docx  # BioMart tutorial
+│   │   ├── primi step per caninizzare il modello umano (1).docx  # Workflow scientifico
+│   │   └── pyton test via del butirrato.docx      # 7 test funzionali
+│   └── CONCEPTS_EXPLAINED.md          # Spiegazione concetti tecnici (COBRApy, GEM, etc.)
 └── scripts/                           # Utility scripts (future)
 ```
 
@@ -144,15 +154,43 @@ jupyter lab notebooks/01_caninization_workflow.ipynb
 - **Ensembl BioMart**: https://www.ensembl.org/biomart
 - **COBRApy**: https://opencobra.github.io/cobrapy/
 
+## Workflow Documentation
+
+**⚠️ IMPORTANTE**: Il workflow corretto segue l'approccio **REAZIONI → GENI** (non geni → reazioni).
+
+### Daniela's Detailed Workflows
+Documentazione completa fornita dalla ricercatrice collaboratrice (16/11/2025):
+- 📖 **Tutorial completo**: `docs/daniela_workflows/README.md`
+- 📊 **Bounds dettagliati**: `data/daniela_detailed/FBA_bounds_colonocita_cane_pilota.xlsx` (19 reazioni)
+- 🧬 **Parametri cinetici**: `data/daniela_detailed/Cinetiche_Butirrato.xlsx` (9 step pathway)
+- 🔧 **Script Python**: GPR substitution, functional tests, BioMart mapping
+
+**Workflow corretto**:
+1. Estrarre **reazioni butirrato** da Human-GEM (keyword search)
+2. Creare sotto-modello con quelle reazioni
+3. Estrarre **ENSG IDs umani** dalle reazioni
+4. BioMart: mapping ENSG → ENSCAFG (ortologhi canini)
+5. Sostituire GPR con IDs canini
+6. Validare con 7 test funzionali (FBA, FVA, gene deletion, sensitivity)
+
+Vedi roadmap dettagliata: [GitHub Issue #1](https://github.com/MyFranzDev/canine-colon-gem/issues/1)
+
 ## Roadmap
 
 ### Phase 1: Pilot (Current)
 - [x] Data collection and curation
-- [ ] Butyrate pathway caninization
-- [ ] FBA validation with physiological bounds
-- [ ] Documentation and reproducibility
+- [x] Daniela's workflow documentation integration
+- [ ] Butyrate reactions extraction (keyword search)
+- [ ] Pathway completeness verification (4 phases + compartments)
+- [ ] ENSG gene list extraction for BioMart
+- [ ] BioMart ortholog mapping (ENSG → ENSCAFG)
+- [ ] GPR substitution with canine IDs
+- [ ] FBA validation with detailed bounds (19 reactions)
+- [ ] 7 functional tests (feasibility, uptake, pathway, FVA, essentiality, sensitivity, energetic)
 
 ### Phase 2: Expansion
+- [ ] Kinetic modeling (Michaelis-Menten parameters)
+- [ ] Dynamic FBA (dFBA) implementation
 - [ ] Full colonocyte metabolism (glycolysis, TCA, amino acids)
 - [ ] Multi-compartment model (lumen, epithelium, blood)
 - [ ] Microbiota integration (community FBA)
